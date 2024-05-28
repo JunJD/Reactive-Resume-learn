@@ -1,6 +1,16 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "MTQ1OWFiOGUtODVjZC00YzI2LTliZTgtZDBlNWJmODc4NzM0fHJlYWQ=",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@vercel/remote-nx",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "token": "<token>",
+        "teamId": "<teamId>"
+      }
+    }
+  },
   "targetDefaults": {
     "build": {
       "cache": true,
