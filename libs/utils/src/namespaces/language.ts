@@ -9,6 +9,12 @@ export type Language = {
 
 export const languages: Language[] = [
   {
+    id: "zh-CN",
+    name: "Chinese Simplified",
+    editorCode: "zhcn",
+    locale: "zh-CN",
+  },
+  {
     id: "af",
     name: "Afrikaans",
     editorCode: "af",
@@ -49,12 +55,6 @@ export const languages: Language[] = [
     name: "Catalan",
     editorCode: "ca",
     locale: "ca-ES",
-  },
-  {
-    id: "zh-CN",
-    name: "Chinese Simplified",
-    editorCode: "zhcn",
-    locale: "zh-CN",
   },
   {
     id: "zh-TW",

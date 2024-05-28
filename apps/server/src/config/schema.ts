@@ -38,6 +38,9 @@ export const configSchema = z.object({
   STORAGE_PORT: z.coerce.number(),
   STORAGE_REGION: z.string().default("us-east-1"),
   STORAGE_BUCKET: z.string(),
+  QINIU_ACCESS_KEY: z.string(),
+  QINIU_SECRET_KEY: z.string(),
+  QINIU_DOMAIN: z.string(),
   STORAGE_ACCESS_KEY: z.string(),
   STORAGE_SECRET_KEY: z.string(),
   STORAGE_USE_SSL: z

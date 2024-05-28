@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
-import { MinioClient, MinioService } from "nestjs-minio-client";
+import * as qiniu from "qiniu";
 import sharp from "sharp";
 
 import { Config } from "../config/schema";
@@ -16,97 +16,52 @@ type ImageUploadType = "pictures" | "previews";
 type DocumentUploadType = "resumes";
 export type UploadType = ImageUploadType | DocumentUploadType;
 
-const PUBLIC_ACCESS_POLICY = {
-  Version: "2012-10-17",
-  Statement: [
-    {
-      Sid: "PublicAccess",
-      Effect: "Allow",
-      Action: ["s3:GetObject"],
-      Principal: { AWS: ["*"] },
-      Resource: [
-        "arn:aws:s3:::{{bucketName}}/*/pictures/*",
-        "arn:aws:s3:::{{bucketName}}/*/previews/*",
-        "arn:aws:s3:::{{bucketName}}/*/resumes/*",
-      ],
-    },
-  ],
-} as const;
-
 @Injectable()
 export class StorageService implements OnModuleInit {
   private readonly logger = new Logger(StorageService.name);
 
-  private client: MinioClient;
   private bucketName: string;
+  private accessKey: string;
+  private secretKey: string;
+  private domain: string;
+  private mac: qiniu.auth.digest.Mac;
+  private config: qiniu.conf.Config;
+  private bucketManager: qiniu.rs.BucketManager;
 
-  constructor(
-    private readonly configService: ConfigService<Config>,
-    private readonly minioService: MinioService,
-  ) {}
+  constructor(private readonly configService: ConfigService<Config>) {}
 
-  async onModuleInit() {
-    this.client = this.minioService.client;
+  onModuleInit() {
     this.bucketName = this.configService.getOrThrow<string>("STORAGE_BUCKET");
+    this.accessKey = this.configService.getOrThrow<string>("QINIU_ACCESS_KEY");
+    this.secretKey = this.configService.getOrThrow<string>("QINIU_SECRET_KEY");
+    this.domain = this.configService.getOrThrow<string>("QINIU_DOMAIN");
 
-    const skipBucketCheck = this.configService.getOrThrow<boolean>("SKIP_STORAGE_BUCKET_CHECK");
+    this.mac = new qiniu.auth.digest.Mac(this.accessKey, this.secretKey);
+    this.config = new qiniu.conf.Config({ zone: qiniu.zone.Zone_z0 }); // you may need to configure this based on your region
+    this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config);
 
-    if (skipBucketCheck) {
-      this.logger.log("Skipping the verification of whether the storage bucket exists.");
-      this.logger.warn("Make sure that the following paths are publicly accessible: ");
-      this.logger.warn("- /pictures/*");
-      this.logger.warn("- /previews/*");
-      this.logger.warn("- /resumes/*");
-
-      return;
-    }
-
-    try {
-      // Create a storage bucket if it doesn't exist
-      // if it exists, log that we were able to connect to the storage service
-      const bucketExists = await this.client.bucketExists(this.bucketName);
-
-      if (bucketExists) {
-        this.logger.log("Successfully connected to the storage service.");
-      } else {
-        const bucketPolicy = JSON.stringify(PUBLIC_ACCESS_POLICY).replace(
-          /{{bucketName}}/g,
-          this.bucketName,
-        );
-
-        try {
-          await this.client.makeBucket(this.bucketName);
-        } catch {
-          throw new InternalServerErrorException(
-            "There was an error while creating the storage bucket.",
-          );
-        }
-
-        try {
-          await this.client.setBucketPolicy(this.bucketName, bucketPolicy);
-        } catch {
-          throw new InternalServerErrorException(
-            "There was an error while applying the policy to the storage bucket.",
-          );
-        }
-
-        this.logger.log(
-          "A new storage bucket has been created and the policy has been applied successfully.",
-        );
-      }
-    } catch (error) {
-      throw new InternalServerErrorException(error);
-    }
+    this.logger.log("Successfully initialized Qiniu storage service.");
   }
 
-  async bucketExists() {
-    const exists = await this.client.bucketExists(this.bucketName);
-
-    if (!exists) {
-      throw new InternalServerErrorException(
-        "There was an error while checking if the storage bucket exists.",
-      );
-    }
+  async bucketExists(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      void this.bucketManager.getBucketInfo(this.bucketName, (err, respBody, respInfo) => {
+        if (err) {
+          reject(err);
+        }
+        if (respInfo.statusCode === 200) {
+          resolve();
+        } else if (respInfo.statusCode === 612) {
+          reject(new InternalServerErrorException("Bucket does not exist."));
+        } else {
+          reject(
+            new InternalServerErrorException(
+              `Error checking bucket existence: ${respInfo.statusCode}`,
+            ),
+          );
+        }
+      });
+    });
   }
 
   async uploadObject(
@@ -116,64 +71,137 @@ export class StorageService implements OnModuleInit {
     filename: string = createId(),
   ) {
     const extension = type === "resumes" ? "pdf" : "jpg";
-    const storageUrl = this.configService.getOrThrow<string>("STORAGE_URL");
     const filepath = `${userId}/${type}/${filename}.${extension}`;
-    const url = `${storageUrl}/${filepath}`;
-    const metadata =
-      extension === "jpg"
-        ? { "Content-Type": "image/jpeg" }
-        : {
-            "Content-Type": "application/pdf",
-            "Content-Disposition": `attachment; filename=${filename}.${extension}`,
-          };
+    const uploadToken = this.generateUploadToken(filepath);
 
     try {
       if (extension === "jpg") {
-        // If the uploaded file is an image, use sharp to resize the image to a maximum width/height of 600px
         buffer = await sharp(buffer)
           .resize({ width: 600, height: 600, fit: sharp.fit.outside })
           .jpeg({ quality: 80 })
           .toBuffer();
       }
 
-      await this.client.putObject(this.bucketName, filepath, buffer, metadata);
+      const formUploader = new qiniu.form_up.FormUploader(this.config);
+      const putExtra = new qiniu.form_up.PutExtra();
+      const result = await this.uploadToQiniu(
+        formUploader,
+        uploadToken,
+        filepath,
+        buffer,
+        putExtra,
+      );
 
-      return url;
-    } catch {
+      return `${this.domain}/${result.key}`;
+    } catch (error) {
+      this.logger.error(error);
       throw new InternalServerErrorException("There was an error while uploading the file.");
     }
   }
 
-  async deleteObject(userId: string, type: UploadType, filename: string) {
+  private generateUploadToken(key: string): string {
+    const options = {
+      scope: `${this.bucketName}:${key}`,
+      expires: 3600,
+    };
+    const putPolicy = new qiniu.rs.PutPolicy(options);
+    return putPolicy.uploadToken(this.mac);
+  }
+
+  private uploadToQiniu(
+    formUploader: qiniu.form_up.FormUploader,
+    uploadToken: string,
+    key: string,
+    buffer: Buffer,
+    putExtra: qiniu.form_up.PutExtra,
+  ): Promise<{ key: string }> {
+    return new Promise((resolve, reject) => {
+      void formUploader.put(uploadToken, key, buffer, putExtra, (err, body, info) => {
+        if (err) {
+          reject(err);
+        }
+        if (info.statusCode === 200) {
+          resolve(body);
+        } else {
+          reject(new Error(`Qiniu upload failed with status code: ${info.statusCode}`));
+        }
+      });
+    });
+  }
+
+  async deleteObject(userId: string, type: UploadType, filename: string): Promise<void> {
     const extension = type === "resumes" ? "pdf" : "jpg";
-    const path = `${userId}/${type}/${filename}.${extension}`;
+    const filepath = `${userId}/${type}/${filename}.${extension}`;
 
     try {
-      await this.client.removeObject(this.bucketName, path);
+      await this.deleteFromQiniu(filepath);
       return;
-    } catch {
+    } catch (error) {
+      this.logger.error(error);
       throw new InternalServerErrorException(
-        `There was an error while deleting the document at the specified path: ${path}.`,
+        `There was an error while deleting the document at the specified path: ${filepath}.`,
       );
     }
   }
 
-  async deleteFolder(prefix: string) {
-    const objectsList = [];
+  private deleteFromQiniu(key: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      void this.bucketManager.delete(this.bucketName, key, (err, _, respInfo) => {
+        if (err) {
+          reject(err);
+        }
+        if (respInfo.statusCode === 200) {
+          resolve();
+        } else {
+          reject(new Error(`Qiniu delete failed with status code: ${respInfo.statusCode}`));
+        }
+      });
+    });
+  }
 
-    const objectsStream = this.client.listObjectsV2(this.bucketName, prefix, true);
-
-    for await (const object of objectsStream) {
-      objectsList.push(object.name);
-    }
-
+  async deleteFolder(prefix: string): Promise<void> {
     try {
-      await this.client.removeObjects(this.bucketName, objectsList);
+      const filesToDelete = await this.listObjects(prefix);
+      await this.deleteMultipleObjects(filesToDelete);
       return;
-    } catch {
+    } catch (error) {
+      this.logger.error(error);
       throw new InternalServerErrorException(
         `There was an error while deleting the folder at the specified path: ${this.bucketName}/${prefix}.`,
       );
     }
+  }
+
+  private listObjects(prefix: string): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      void this.bucketManager.listPrefix(this.bucketName, { prefix }, (err, respBody, respInfo) => {
+        if (err) {
+          reject(err);
+        }
+        if (respInfo.statusCode === 200) {
+          const files = respBody.items.map((item: { key: string }) => item.key);
+          resolve(files);
+        } else {
+          reject(new Error(`Qiniu list failed with status code: ${respInfo.statusCode}`));
+        }
+      });
+    });
+  }
+
+  private deleteMultipleObjects(keys: string[]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const deleteOperations = keys.map((key) => qiniu.rs.deleteOp(this.bucketName, key));
+      void this.bucketManager.batch(deleteOperations, (err, _, respInfo) => {
+        if (err) {
+          reject(err);
+        }
+        if (respInfo.statusCode === 200 || respInfo.statusCode === 298) {
+          // 298 is partial success
+          resolve();
+        } else {
+          reject(new Error(`Qiniu batch delete failed with status code: ${respInfo.statusCode}`));
+        }
+      });
+    });
   }
 }

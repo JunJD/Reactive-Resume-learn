@@ -6,7 +6,7 @@ import { ResumeDto } from "@reactive-resume/dto";
 import { ErrorMessage, getFontUrls } from "@reactive-resume/utils";
 import retry from "async-retry";
 import { PDFDocument } from "pdf-lib";
-import { connect } from "puppeteer";
+import puppeteer, { Browser } from "puppeteer";
 
 import { Config } from "../config/schema";
 import { StorageService } from "../storage/storage.service";
@@ -18,6 +18,10 @@ export class PrinterService {
   private readonly browserURL: string;
 
   private readonly ignoreHTTPSErrors: boolean;
+
+  private browser: Browser;
+
+  private wsEndpoint: string;
 
   constructor(
     private readonly configService: ConfigService<Config>,
@@ -31,18 +35,28 @@ export class PrinterService {
     this.ignoreHTTPSErrors = this.configService.getOrThrow<boolean>("CHROME_IGNORE_HTTPS_ERRORS");
   }
 
-  private async getBrowser() {
-    try {
-      return await connect({
-        browserWSEndpoint: this.browserURL,
-        ignoreHTTPSErrors: this.ignoreHTTPSErrors,
-      });
-    } catch (error) {
-      throw new InternalServerErrorException(
-        ErrorMessage.InvalidBrowserConnection,
-        (error as Error).message,
-      );
+  private async getBrowser(): Promise<Browser> {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (this.browser) {
+      await this.browser.disconnect();
     }
+
+    if (!this.wsEndpoint) {
+      try {
+        const browser = await puppeteer.launch();
+        this.wsEndpoint = browser.wsEndpoint();
+      } catch (error) {
+        throw new InternalServerErrorException(
+          ErrorMessage.InvalidBrowserConnection,
+          (error as Error).message,
+        );
+      }
+    }
+    this.browser = await puppeteer.connect({
+      browserWSEndpoint: this.wsEndpoint,
+    });
+
+    return this.browser;
   }
 
   async getVersion() {
@@ -97,26 +111,15 @@ export class PrinterService {
       const page = await browser.newPage();
 
       const publicUrl = this.configService.getOrThrow<string>("PUBLIC_URL");
-      const storageUrl = this.configService.getOrThrow<string>("STORAGE_URL");
 
-      let url = publicUrl;
+      const url = publicUrl;
 
-      if ([publicUrl, storageUrl].some((url) => url.includes("localhost"))) {
-        // Switch client URL from `localhost` to `host.docker.internal` in development
-        // This is required because the browser is running in a container and the client is running on the host machine.
-        url = url.replace("localhost", "host.docker.internal");
-
+      if ([publicUrl].some((url) => url.includes("localhost"))) {
         await page.setRequestInterception(true);
 
         // Intercept requests of `localhost` to `host.docker.internal` in development
         page.on("request", (request) => {
-          if (request.url().startsWith(storageUrl)) {
-            const modifiedUrl = request.url().replace("localhost", `host.docker.internal`);
-
-            void request.continue({ url: modifiedUrl });
-          } else {
-            void request.continue();
-          }
+          void request.continue();
         });
       }
 
@@ -211,26 +214,15 @@ export class PrinterService {
     const page = await browser.newPage();
 
     const publicUrl = this.configService.getOrThrow<string>("PUBLIC_URL");
-    const storageUrl = this.configService.getOrThrow<string>("STORAGE_URL");
 
-    let url = publicUrl;
+    const url = publicUrl;
 
-    if ([publicUrl, storageUrl].some((url) => url.includes("localhost"))) {
-      // Switch client URL from `localhost` to `host.docker.internal` in development
-      // This is required because the browser is running in a container and the client is running on the host machine.
-      url = url.replace("localhost", "host.docker.internal");
-
+    if ([publicUrl].some((url) => url.includes("localhost"))) {
       await page.setRequestInterception(true);
 
       // Intercept requests of `localhost` to `host.docker.internal` in development
       page.on("request", (request) => {
-        if (request.url().startsWith(storageUrl)) {
-          const modifiedUrl = request.url().replace("localhost", `host.docker.internal`);
-
-          void request.continue({ url: modifiedUrl });
-        } else {
-          void request.continue();
-        }
+        void request.continue();
       });
     }
 
