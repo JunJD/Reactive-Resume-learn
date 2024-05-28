@@ -6,8 +6,7 @@
       "runner": "@vercel/remote-nx",
       "options": {
         "cacheableOperations": ["build", "test", "lint", "e2e"],
-        "token": "<token>",
-        "teamId": "<teamId>"
+        "token": "MTQ1OWFiOGUtODVjZC00YzI2LTliZTgtZDBlNWJmODc4NzM0fHJlYWQ="
       }
     }
   },
