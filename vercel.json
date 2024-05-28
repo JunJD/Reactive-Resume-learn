@@ -2,21 +2,30 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/apps/server/main.js",
+      "src": "apps/server/src/main.ts",
       "use": "@vercel/node",
       "config": {
+        "includeFiles": [
+          "dist/apps/server/**"
+        ],
         "engines": {
           "node": "20.13.1"
         }
       }
     },
     {
-      "src": "dist/apps/client/**",
-      "use": "@vercel/static-build"
+      "src": "apps/client/src/**/*",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/apps/client"
+      }
     },
     {
-      "src": "dist/apps/artboard/**",
-      "use": "@vercel/static-build"
+      "src": "apps/artboard/src/**/*",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/apps/artboard"
+      }
     }
   ],
   "routes": [
