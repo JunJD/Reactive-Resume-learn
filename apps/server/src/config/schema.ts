@@ -8,7 +8,7 @@ export const configSchema = z.object({
 
   // URLs
   PUBLIC_URL: z.string().url(),
-  STORAGE_URL: z.string().url(),
+  // STORAGE_URL: z.string().url(),
 
   // Database (Prisma)
   DATABASE_URL: z.string().url().startsWith("postgresql://"),
@@ -18,12 +18,12 @@ export const configSchema = z.object({
   REFRESH_TOKEN_SECRET: z.string(),
 
   // Browser
-  CHROME_TOKEN: z.string(),
-  CHROME_URL: z.string().url(),
-  CHROME_IGNORE_HTTPS_ERRORS: z
-    .string()
-    .default("false")
-    .transform((s) => s !== "false" && s !== "0"),
+  // CHROME_TOKEN: z.string(),
+  // CHROME_URL: z.string().url(),
+  // CHROME_IGNORE_HTTPS_ERRORS: z
+  // .string()
+  // .default("false")
+  // .transform((s) => s !== "false" && s !== "0"),
 
   // Mail Server
   MAIL_FROM: z.string().includes("@").optional().default("noreply@localhost"),
@@ -34,19 +34,19 @@ export const configSchema = z.object({
     .optional(),
 
   // Storage
-  STORAGE_ENDPOINT: z.string(),
-  STORAGE_PORT: z.coerce.number(),
-  STORAGE_REGION: z.string().default("us-east-1"),
+  // STORAGE_ENDPOINT: z.string(),
+  // STORAGE_PORT: z.coerce.number(),
+  // STORAGE_REGION: z.string().default("us-east-1"),
   STORAGE_BUCKET: z.string(),
   QINIU_ACCESS_KEY: z.string(),
   QINIU_SECRET_KEY: z.string(),
   QINIU_DOMAIN: z.string(),
-  STORAGE_ACCESS_KEY: z.string(),
-  STORAGE_SECRET_KEY: z.string(),
-  STORAGE_USE_SSL: z
-    .string()
-    .default("false")
-    .transform((s) => s !== "false" && s !== "0"),
+  // STORAGE_ACCESS_KEY: z.string(),
+  // STORAGE_SECRET_KEY: z.string(),
+  // STORAGE_USE_SSL: z
+  //   .string()
+  //   .default("false")
+  //   .transform((s) => s !== "false" && s !== "0"),
 
   // Crowdin (Optional)
   CROWDIN_PROJECT_ID: z.coerce.number().optional(),

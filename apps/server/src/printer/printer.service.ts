@@ -28,11 +28,10 @@ export class PrinterService {
     private readonly storageService: StorageService,
     private readonly httpService: HttpService,
   ) {
-    const chromeUrl = this.configService.getOrThrow<string>("CHROME_URL");
-    const chromeToken = this.configService.getOrThrow<string>("CHROME_TOKEN");
-
-    this.browserURL = `${chromeUrl}?token=${chromeToken}`;
-    this.ignoreHTTPSErrors = this.configService.getOrThrow<boolean>("CHROME_IGNORE_HTTPS_ERRORS");
+    // const chromeUrl = this.configService.getOrThrow<string>("CHROME_URL");
+    // const chromeToken = this.configService.getOrThrow<string>("CHROME_TOKEN");
+    // this.browserURL = `${chromeUrl}?token=${chromeToken}`;
+    // this.ignoreHTTPSErrors = this.configService.getOrThrow<boolean>("CHROME_IGNORE_HTTPS_ERRORS");
   }
 
   private async getBrowser(): Promise<Browser> {
