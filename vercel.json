@@ -1,14 +1,14 @@
 {
   "version": 2,
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
   "builds": [
     {
       "src": "apps/client/package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist/apps/client"
-      },
-      "buildCommand": "pnpm build",
-      "installCommand": "pnpm install"
+      }
     },
     {
       "src": "apps/artboard/package.json",
