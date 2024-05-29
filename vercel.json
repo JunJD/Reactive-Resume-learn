@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run build",
+  "buildCommand": "npx nx run-many -t build",
   "installCommand": "pnpm run install",
   "builds": [
     {
