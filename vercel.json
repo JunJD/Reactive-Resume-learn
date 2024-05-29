@@ -6,7 +6,9 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist/apps/client"
-      }
+      },
+      "buildCommand": "pnpm build",
+      "installCommand": "pnpm install"
     },
     {
       "src": "apps/artboard/package.json",
