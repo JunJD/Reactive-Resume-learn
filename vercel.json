@@ -1,18 +1,24 @@
 {
   "version": 2,
   "outputDirectory": "dist",
+  "builds": [
+    {
+      "src": "apps/server/main.ts",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "apps/server/main.js"
+      "dest": "dist/apps/server/main.js"
     },
     {
       "src": "/artboard/(.*)",
-      "dest": "apps/artboard/index.html"
+      "dest": "dist/apps/artboard/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "apps/client/index.html"
+      "dest": "dist/apps/client/index.html"
     }
   ]
 }
