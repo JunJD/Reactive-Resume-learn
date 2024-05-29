@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install",
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm run install",
   "builds": [
     {
       "src": "apps/client/package.json",
