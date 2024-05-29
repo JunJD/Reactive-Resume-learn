@@ -9,16 +9,22 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "dist/apps/server/main.js"
-    },
-    {
       "src": "/artboard/(.*)",
       "dest": "dist/apps/artboard/index.html"
     },
     {
       "src": "/(.*)",
       "dest": "dist/apps/client/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/artboard/:path*",
+      "destination": "/dist/apps/artboard/index.html"
+    },
+    {
+      "source": "/:path((?!api|artboard).*)",
+      "destination": "/dist/apps/client/index.html"
     }
   ]
 }
