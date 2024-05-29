@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "npx nx run-many -t build",
   "installCommand": "pnpm run install",
+  "outputDirectory": "dist",
   "builds": [
     {
       "src": "apps/client/package.json",
