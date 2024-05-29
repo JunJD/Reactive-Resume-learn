@@ -12,7 +12,18 @@
   "routes": [
     {
       "src": "/(.*)",
+      "dest": "/dist/apps/client/index.html"
+    },
+    {
+      "src": "/(.*)",
       "dest": "/dist/apps/client/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/dist/apps/client/index.html",
+      "statusCode": 301
     }
   ]
 }
