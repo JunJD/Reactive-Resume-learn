@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "apps/server/main.js"
+    },
+    {
+      "src": "/artboard/(.*)",
+      "dest": "apps/artboard/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "apps/client/index.html"
+    }
+  ]
+}
