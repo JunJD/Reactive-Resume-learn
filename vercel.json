@@ -2,28 +2,40 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/apps/client/**",
+      "src": "apps/client/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "outputDirectory": "dist/apps/client"
+        "distDir": "dist/apps/client"
       }
+    },
+    {
+      "src": "apps/artboard/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/apps/artboard"
+      }
+    },
+    {
+      "src": "apps/nestjs-app/package.json",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/dist/apps/client/index.html"
+      "src": "/api/(.*)",
+      "dest": "/dist/apps/server/main.js"
+    },
+    {
+      "src": "/client/(.*)",
+      "dest": "/dist/apps/client/$1"
+    },
+    {
+      "src": "/artboard/(.*)",
+      "dest": "/dist/apps/artboard/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/apps/client/$1"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/dist/apps/client/index.html",
-      "statusCode": 301
+      "dest": "/dist/apps/client/index.html"
     }
   ]
 }
