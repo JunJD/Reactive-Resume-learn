@@ -61,7 +61,7 @@ msgstr "Безплатен конструктор на автобиографи�
 
 #: apps/client/src/pages/home/components/footer.tsx:21
 #: apps/client/src/pages/home/sections/hero/index.tsx:45
-msgid "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+msgid "A resume generator that supports ai agents, a large number of templates to choose from."
 msgstr "Безплатен конструктор на автобиографии с отворен код, който опростява процеса на създаване, актуализиране и споделяне на автобиографията ви."
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:53

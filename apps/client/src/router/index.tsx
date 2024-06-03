@@ -16,10 +16,14 @@ import { SettingsPage } from "../pages/dashboard/settings/page";
 import { HomeLayout } from "../pages/home/layout";
 import { PrivacyPolicyPage } from "../pages/home/meta/privacy-policy/page";
 import { HomePage } from "../pages/home/page";
+import { PricingLayout } from "../pages/pricing/layout";
+import { PricingPage } from "../pages/pricing/page";
+import { PayPage } from "../pages/pricing/pay/page";
 import { publicLoader, PublicResumePage } from "../pages/public/page";
 import { Providers } from "../providers";
 import { AuthGuard } from "./guards/auth";
 import { GuestGuard } from "./guards/guest";
+import { UnpaIdGuard } from "./guards/unpaid-order";
 import { authLoader } from "./loaders/auth";
 
 export const routes = createRoutesFromElements(
@@ -32,6 +36,16 @@ export const routes = createRoutesFromElements(
         <Route index element={<Navigate replace to="/" />} />
       </Route>
     </Route>
+
+    <Route element={<AuthGuard />}>
+      <Route element={<UnpaIdGuard />}>
+        <Route path="pricing" element={<PricingLayout />}>
+          <Route index element={<PricingPage />} />
+        </Route>
+      </Route>
+    </Route>
+
+    <Route path="pay" element={<PayPage />} />
 
     <Route path="auth">
       <Route element={<AuthLayout />}>

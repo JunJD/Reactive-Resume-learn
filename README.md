@@ -35,6 +35,11 @@ npx prisma generate
 ```bash
 npx prisma migrate dev --name init
 ```
+7. 1 增加表
+```bash
+prisma migrate dev --name add_product_table
+npx prisma generate //生成客户端 类型...
+```
 
 ## minio
 1. 安装minio

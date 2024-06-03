@@ -32,6 +32,7 @@ model User {
   provider         Provider
   secrets          Secrets?
   resumes          Resume[]
+  orders           Order[]
 }
 
 model Secrets {
@@ -77,4 +78,56 @@ model Statistics {
   updatedAt DateTime @updatedAt
 
   @@unique([resumeId, id])
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  productCode String   @unique
+  productName String
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum OrderType {
+  VM_SERVE_VIP
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+model Order {
+  id            String      @id @default(cuid())
+  orderCode     String   @unique
+  orderType     OrderType
+  products      String[] // array of strings
+  orderStatus   OrderStatus
+  quantity      Int
+  totalPrice    Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation to User
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relation to Payment
+  payment       Payment?
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId       String   @unique
+  tradeNo       String   // 支付宝交易号
+  qrCode        String   // 支付二维码
+  traceId       String   // 跟踪ID
+  amount        Float    // 支付金额
+  status        String   // 支付状态
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
 }

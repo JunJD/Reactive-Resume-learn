@@ -61,7 +61,7 @@ msgstr "一個免費且開源的簡歷建立工具"
 
 #: apps/client/src/pages/home/components/footer.tsx:21
 #: apps/client/src/pages/home/sections/hero/index.tsx:45
-msgid "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+msgid "A resume generator that supports ai agents, a large number of templates to choose from."
 msgstr "一個免費且開源的簡歷生成器，簡化了創建、更新和分享您的簡歷的過程。"
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:53

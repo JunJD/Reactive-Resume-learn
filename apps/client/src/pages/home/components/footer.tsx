@@ -18,7 +18,7 @@ export const Footer = () => (
         <h2 className="text-xl font-medium">{t`Reactive Resume`}</h2>
 
         <p className="prose prose-sm prose-zinc leading-relaxed opacity-60 dark:prose-invert">
-          {t`A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume.`}
+          {t`A resume generator that supports ai agents, a large number of templates to choose from.`}
         </p>
 
         <Copyright className="mt-6" />

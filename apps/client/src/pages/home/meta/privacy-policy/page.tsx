@@ -12,7 +12,7 @@ export const PrivacyPolicyPage = () => (
 
       <meta
         name="description"
-        content="A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+        content="A resume generator that supports ai agents, a large number of templates to choose from."
       />
     </Helmet>
 

@@ -14,6 +14,17 @@
   "vitest.disableWorkspaceWarning": true,
   "cSpell.words": [
     "artboard",
-    "fontkit"
+    "cuid",
+    "datasource",
+    "fontkit",
+    "hookform",
+    "lingui",
+    "paralleldrive",
+    "precreate",
+    "qrcode",
+    "tanstack",
+    "unlocalized",
+    "Wechat",
+    "zustand"
   ]
 }

@@ -61,7 +61,7 @@ msgstr "Një ndërtues i CV-së falas dhe open source"
 
 #: apps/client/src/pages/home/components/footer.tsx:21
 #: apps/client/src/pages/home/sections/hero/index.tsx:45
-msgid "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+msgid "A resume generator that supports ai agents, a large number of templates to choose from."
 msgstr "Një ndërtues i CV-së, falas dhe open-source që thjeshtëson procesin e krijimit, përditësimit dhe shpërndarjes së CV-së tuaj."
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:53

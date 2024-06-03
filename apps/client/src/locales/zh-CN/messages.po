@@ -59,10 +59,20 @@ msgstr "<0>已启用双重身份验证。</0>您在每次登录时都需要输�
 msgid "A free and open-source resume builder"
 msgstr "免费开源的简历生成器"
 
+#: apps/client/src/pages/home/page.tsx:24
+#: apps/client/src/pages/home/sections/hero/index.tsx:40
+msgid "Resume builder for new professionals"
+msgstr "职场新人的专属简历生成器"
+
 #: apps/client/src/pages/home/components/footer.tsx:21
 #: apps/client/src/pages/home/sections/hero/index.tsx:45
-msgid "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+msgid "A resume generator that supports ai agents, a large number of templates to choose from."
 msgstr "一款免费开源的简历生成器，可简化创建、更新和共享简历的过程。"
+
+#: apps/client/src/pages/home/components/footer.tsx:21
+#: apps/client/src/pages/home/sections/hero/index.tsx:45
+msgid "A resume generator that supports ai agents, a large number of templates to choose from."
+msgstr "一款支持ai agent的简历生成器，大量模板可选。"
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:53
 #: apps/client/src/pages/builder/sidebars/right/sections/sharing.tsx:29
@@ -632,7 +642,7 @@ msgstr "给你的旧简历起一个新名字。"
 #: apps/client/src/pages/auth/verify-email/page.tsx:67
 #: apps/client/src/pages/home/sections/hero/call-to-action.tsx:18
 msgid "Go to Dashboard"
-msgstr "转到控制面板"
+msgstr "去编辑简历"
 
 #: apps/client/src/pages/auth/_components/social-auth.tsx:31
 msgid "Google"
@@ -1611,6 +1621,10 @@ msgstr "验证电子邮件地址"
 msgid "Version 4"
 msgstr "第 4 版"
 
+#: apps/client/src/pages/home/sections/hero/index.tsx:26
+msgid "Become a premium member"
+msgstr "成为高级会员"
+
 #: apps/client/src/pages/builder/sidebars/right/sections/statistics.tsx:51
 msgid "Views"
 msgstr "视图"
@@ -1640,6 +1654,10 @@ msgstr "网站"
 #: apps/client/src/pages/home/sections/hero/index.tsx:32
 msgid "What's new in the latest version"
 msgstr "最新版本的新功能"
+
+#: apps/client/src/pages/home/sections/hero/index.tsx:32
+msgid "Learn about exclusive privileges of Premium members"
+msgstr "了解高级会员的专属特权"
 
 #: apps/client/src/pages/builder/sidebars/left/dialogs/custom-section.tsx:157
 #: apps/client/src/pages/builder/sidebars/left/dialogs/interests.tsx:68
@@ -1701,3 +1719,11 @@ msgstr "放大"
 msgid "Zoom Out"
 msgstr "缩小"
 
+msgid "The micro signal has been copied to the clipboard"
+msgstr "微信号已复制到剪切板
+
+msgid "If you have any questions, contact me. Wechat ID"
+msgstr "有问题可联系我微信号"
+
+msgid "DiNgJuNjIE_22"
+msgstr "DiNgJuNjIE_22"

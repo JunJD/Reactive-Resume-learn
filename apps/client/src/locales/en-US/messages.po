@@ -61,8 +61,8 @@ msgstr "A free and open-source resume builder"
 
 #: apps/client/src/pages/home/components/footer.tsx:21
 #: apps/client/src/pages/home/sections/hero/index.tsx:45
-msgid "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
-msgstr "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+msgid "A resume generator that supports ai agents, a large number of templates to choose from."
+msgstr "A resume generator that supports ai agents, a large number of templates to choose from."
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:53
 #: apps/client/src/pages/builder/sidebars/right/sections/sharing.tsx:29

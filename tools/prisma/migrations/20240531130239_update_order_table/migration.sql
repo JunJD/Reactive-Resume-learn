@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "OrderType" AS ENUM ('VM_SERVE_VIP');
+
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED');
