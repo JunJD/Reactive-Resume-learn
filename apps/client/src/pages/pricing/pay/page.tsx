@@ -14,6 +14,7 @@ import { toast } from "@/client/hooks/use-toast";
 import { usePay } from "@/client/services/pricing/pay";
 
 export const PayPage = () => {
+  document.title = "支付 支付宝 - 10万积分";
   const { unpaidOrder, startPollingGetUnpaidOrderStatus } = usePay();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -45,7 +46,9 @@ export const PayPage = () => {
               商品名称：10万积分
             </CardDescription>
             <CardTitle>
-              <p className="text-center text-xl">¥10.00 (不可多付或少付)</p>
+              <p className="text-center text-xl">
+                <span className="text-red-500">¥10.00</span> (不可多付或少付)
+              </p>
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">

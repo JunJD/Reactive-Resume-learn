@@ -45,7 +45,9 @@ export const routes = createRoutesFromElements(
       </Route>
     </Route>
 
-    <Route path="pay" element={<PayPage />} />
+    <Route element={<AuthGuard />}>
+      <Route path="pay" element={<PayPage />} />
+    </Route>
 
     <Route path="auth">
       <Route element={<AuthLayout />}>
