@@ -688,6 +688,12 @@ msgstr "隐藏图标"
 msgid "Hold <0>Ctrl</0> to display your password temporarily."
 msgstr "按住<0>Ctrl</0>可暂时显示您的密码。"
 
+#: apps/client/src/pages/auth/login/page.tsx:104
+#: apps/client/src/pages/auth/register/page.tsx:174
+#: apps/client/src/pages/auth/reset-password/page.tsx:88
+msgid "Hold <0>^</0> to display your password temporarily."
+msgstr "按住<0>^</0>可暂时显示您的密码。"
+
 #: apps/client/src/pages/builder/sidebars/left/sections/picture/options.tsx:98
 msgid "Horizontal"
 msgstr "横向"

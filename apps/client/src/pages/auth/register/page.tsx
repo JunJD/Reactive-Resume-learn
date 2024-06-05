@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t, Trans } from "@lingui/macro";
 import { ArrowRight } from "@phosphor-icons/react";
 import { registerSchema } from "@reactive-resume/dto";
-import { usePasswordToggle } from "@reactive-resume/hooks";
+import { useBreakpoint, usePasswordToggle } from "@reactive-resume/hooks";
 import {
   Alert,
   AlertTitle,
@@ -32,7 +32,7 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const { register, loading } = useRegister();
   const disableSignups = import.meta.env.VITE_DISABLE_SIGNUPS === "true";
-
+  const { isMac } = useBreakpoint();
   const { providers } = useAuthProviders();
   const emailAuthDisabled = !providers?.includes("email");
 
@@ -46,7 +46,7 @@ export const RegisterPage = () => {
       username: "",
       email: "",
       password: "",
-      locale: "en-US",
+      locale: "zh-CN",
     },
   });
 
@@ -149,7 +149,7 @@ export const RegisterPage = () => {
                   <FormControl>
                     <Input
                       placeholder={t({
-                        message: "john.doe@example.com",
+                        message: "dingjunjie@icloud.com",
                         context:
                           "Localized version of a placeholder email. For example, max.mustermann@example.de in German or jan.kowalski@example.pl in Polish.",
                       })}
@@ -171,10 +171,17 @@ export const RegisterPage = () => {
                     <Input type="password" {...field} />
                   </FormControl>
                   <FormDescription>
-                    <Trans>
-                      Hold <code className="text-xs font-bold">Ctrl</code> to display your password
-                      temporarily.
-                    </Trans>
+                    {isMac ? (
+                      <Trans>
+                        Hold <code className="text-xs font-bold">^</code> to display your password
+                        temporarily.
+                      </Trans>
+                    ) : (
+                      <Trans>
+                        Hold <code className="text-xs font-bold">Ctrl</code> to display your
+                        password temporarily.
+                      </Trans>
+                    )}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

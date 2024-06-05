@@ -5,6 +5,6 @@ import { userSchema } from "../user";
 
 export const registerSchema = userSchema
   .pick({ name: true, email: true, username: true, locale: true })
-  .extend({ password: z.password().min(6) });
+  .extend({ password: z.password().min(6, { message: "密码长度必须大于等于6" }) });
 
 export class RegisterDto extends createZodDto(registerSchema) {}

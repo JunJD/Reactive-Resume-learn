@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t, Trans } from "@lingui/macro";
 import { ArrowRight } from "@phosphor-icons/react";
 import { loginSchema } from "@reactive-resume/dto";
-import { usePasswordToggle } from "@reactive-resume/hooks";
+import { useBreakpoint, usePasswordToggle } from "@reactive-resume/hooks";
 import {
   Button,
   Form,
@@ -31,7 +31,7 @@ export const LoginPage = () => {
 
   const { providers } = useAuthProviders();
   const emailAuthDisabled = !providers?.includes("email");
-
+  const { isMac } = useBreakpoint();
   const formRef = useRef<HTMLFormElement>(null);
   usePasswordToggle(formRef);
 
@@ -101,10 +101,17 @@ export const LoginPage = () => {
                     <Input type="password" {...field} />
                   </FormControl>
                   <FormDescription>
-                    <Trans>
-                      Hold <code className="text-xs font-bold">Ctrl</code> to display your password
-                      temporarily.
-                    </Trans>
+                    {isMac ? (
+                      <Trans>
+                        Hold <code className="text-xs font-bold">^</code> to display your password
+                        temporarily.
+                      </Trans>
+                    ) : (
+                      <Trans>
+                        Hold <code className="text-xs font-bold">Ctrl</code> to display your
+                        password temporarily.
+                      </Trans>
+                    )}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { t, Trans } from "@lingui/macro";
 import { resetPasswordSchema } from "@reactive-resume/dto";
-import { usePasswordToggle } from "@reactive-resume/hooks";
+import { useBreakpoint, usePasswordToggle } from "@reactive-resume/hooks";
 import {
   Button,
   Form,
@@ -27,7 +27,7 @@ export const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token") ?? "";
-
+  const { isMac } = useBreakpoint();
   const { resetPassword, loading } = useResetPassword();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -85,10 +85,17 @@ export const ResetPasswordPage = () => {
                     <Input type="password" {...field} />
                   </FormControl>
                   <FormDescription>
-                    <Trans>
-                      Hold <code className="text-xs font-bold">Ctrl</code> to display your password
-                      temporarily.
-                    </Trans>
+                    {isMac ? (
+                      <Trans>
+                        Hold <code className="text-xs font-bold">^</code> to display your password
+                        temporarily.
+                      </Trans>
+                    ) : (
+                      <Trans>
+                        Hold <code className="text-xs font-bold">Ctrl</code> to display your
+                        password temporarily.
+                      </Trans>
+                    )}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
