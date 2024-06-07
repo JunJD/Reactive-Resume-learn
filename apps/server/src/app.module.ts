@@ -17,6 +17,7 @@ import { PrinterModule } from "./printer/printer.module";
 import { ProductsModule } from "./products/products.module";
 import { ResumeModule } from "./resume/resume.module";
 import { StorageModule } from "./storage/storage.module";
+import { SvipModule } from "./svip/svip.module";
 import { TranslationModule } from "./translation/translation.module";
 import { UserModule } from "./user/user.module";
 
@@ -39,6 +40,7 @@ import { UserModule } from "./user/user.module";
     PrinterModule,
     TranslationModule,
     ContributorsModule,
+    SvipModule,
 
     // Static Assets
     ServeStaticModule.forRoot({

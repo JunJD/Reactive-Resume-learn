@@ -19,7 +19,7 @@ export const ImportResumeListItem = () => {
           <KeyboardShortcut className="ml-2">^I</KeyboardShortcut>
         </>
       }
-      description={t`LinkedIn, JSON Resume, etc.`}
+      description={t`PDF、JSON Resume, etc.`}
       onClick={() => {
         open("create");
       }}

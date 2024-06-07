@@ -69,7 +69,7 @@ const IssuesCard = () => (
         <span className="line-clamp-1">{t`Raise an issue`}</span>
       </a>
 
-      <a className={cn(buttonVariants({ size: "sm" }))} href="mailto:hello@amruthpillai.com">
+      <a className={cn(buttonVariants({ size: "sm" }))} href="mailto:dingjunjie_222@qq.com">
         <EnvelopeSimpleOpen size={14} weight="bold" className="mr-2" />
         <span className="line-clamp-1">{t`Send me a message`}</span>
       </a>
@@ -119,7 +119,7 @@ export const InformationSection = () => {
       </header>
 
       <main className="grid gap-y-4">
-        <DonateCard />
+        {/* <DonateCard /> */}
         <DocumentationCard />
         <IssuesCard />
       </main>

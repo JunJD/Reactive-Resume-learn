@@ -63,19 +63,9 @@ export const AuthLayout = () => {
           width={1920}
           height={1080}
           alt="Open books on a table"
-          className="h-screen w-full object-cover object-center"
-          src="/backgrounds/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg"
+          className="h-screen w-full object-cover object-top"
+          src="/backgrounds/d7LWbMZAcG6L8SaEcSQ35EFkwwCAj3.png"
         />
-
-        <div className="absolute bottom-5 right-5 z-10 bg-primary/30 px-4 py-2 text-xs font-medium text-primary-foreground backdrop-blur-sm">
-          <a
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            href="https://unsplash.com/photos/Oaqk7qqNh_c"
-          >
-            {t`Photograph by Patrick Tomasso`}
-          </a>
-        </div>
       </div>
     </div>
   );

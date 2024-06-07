@@ -19,15 +19,19 @@
     "datasource",
     "fontkit",
     "hookform",
+    "langchain",
     "lingui",
     "Mustermann",
     "paralleldrive",
     "precreate",
     "qrcode",
     "Signups",
+    "Svip",
+    "Sxeg",
     "tanstack",
     "unlocalized",
     "Wechat",
+    "zhcn",
     "zustand"
   ]
 }

@@ -7,14 +7,22 @@ import { Config } from "@/server/config/schema";
 
 import { MailService } from "./mail.service";
 
-const emptyTransporter = nodemailer.createTransport({});
+const emptyTransporter = nodemailer.createTransport({
+  host: "smtp.qq.com",
+  port: 587, // 使用 TLS
+  secure: false, // 使用 TLS
+  auth: {
+    user: "864546065@qq.com",
+    pass: "qhxqdygnjbntbejc", // QQ 邮箱授权码
+  },
+});
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Config>) => {
-        const from = configService.get("MAIL_FROM");
+        // const from = configService.get("MAIL_FROM");
         const smtpUrl = configService.get("SMTP_URL");
 
         if (!smtpUrl) {
@@ -25,8 +33,8 @@ const emptyTransporter = nodemailer.createTransport({});
         }
 
         return {
-          defaults: { from },
-          transport: smtpUrl || emptyTransporter,
+          defaults: { from: "joanie.greenfelder@ethereal.email" },
+          transport: emptyTransporter,
         };
       },
     }),

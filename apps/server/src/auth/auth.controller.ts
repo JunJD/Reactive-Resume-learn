@@ -310,7 +310,8 @@ export class AuthController {
     await this.authService.sendVerificationEmail(email);
 
     return {
-      message: "You should have received a new email with a link to verify your email address.",
+      message:
+        "您应该收到了一封新的电子邮件，其中包含验证您的电子邮件地址的链接/You should have received a new email with a link to verify your email address.",
     };
   }
 }

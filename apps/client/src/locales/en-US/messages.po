@@ -311,8 +311,8 @@ msgid "Copy"
 msgstr "Copy"
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:146
-msgid "Copy Link to Resume"
-msgstr "Copy Link to Resume"
+msgid "Copy online resume links"
+msgstr "Copy online resume links"
 
 #: apps/client/src/pages/builder/sidebars/right/sections/sharing.tsx:78
 msgid "Copy to Clipboard"
@@ -457,6 +457,11 @@ msgstr "Download a PDF of your resume. This file can be used to print your resum
 #: apps/client/src/pages/public/page.tsx:104
 msgid "Download PDF"
 msgstr "Download PDF"
+
+#: apps/client/src/pages/builder/_components/toolbar.tsx:158
+#: apps/client/src/pages/public/page.tsx:104
+msgid "Translate Resume"
+msgstr "Translate Resume"
 
 #: apps/client/src/pages/builder/sidebars/right/sections/statistics.tsx:58
 msgid "Downloads"
@@ -850,8 +855,8 @@ msgstr "Line Height"
 
 #: apps/client/src/pages/dashboard/resumes/_layouts/grid/_components/import-card.tsx:33
 #: apps/client/src/pages/dashboard/resumes/_layouts/list/_components/import-item.tsx:22
-msgid "LinkedIn, JSON Resume, etc."
-msgstr "LinkedIn, JSON Resume, etc."
+msgid "PDF、JSON Resume, etc."
+msgstr "PDF、JSON Resume, etc."
 
 #: apps/client/src/pages/dashboard/resumes/page.tsx:47
 msgid "List"

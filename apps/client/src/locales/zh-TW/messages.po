@@ -311,7 +311,7 @@ msgid "Copy"
 msgstr "複製"
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:146
-msgid "Copy Link to Resume"
+msgid "Copy online resume links"
 msgstr "複製連結到簡歷"
 
 #: apps/client/src/pages/builder/sidebars/right/sections/sharing.tsx:78
@@ -850,7 +850,7 @@ msgstr ""
 
 #: apps/client/src/pages/dashboard/resumes/_layouts/grid/_components/import-card.tsx:33
 #: apps/client/src/pages/dashboard/resumes/_layouts/list/_components/import-item.tsx:22
-msgid "LinkedIn, JSON Resume, etc."
+msgid "PDF、JSON Resume, etc."
 msgstr ""
 
 #: apps/client/src/pages/dashboard/resumes/page.tsx:47

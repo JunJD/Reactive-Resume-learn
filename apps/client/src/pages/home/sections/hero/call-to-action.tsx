@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import { Book, SignOut } from "@phosphor-icons/react";
+import { EnvelopeSimpleOpen, SignOut } from "@phosphor-icons/react";
 import { Button } from "@reactive-resume/ui";
 import { Link } from "react-router-dom";
 
@@ -33,9 +33,9 @@ export const HeroCTA = () => {
       </Button>
 
       <Button asChild size="lg" variant="link">
-        <a href="https://docs.rxresu.me" target="_blank" rel="noopener noreferrer nofollow">
-          <Book className="mr-3" />
-          {t`Learn more`}
+        <a href="mailto:dingjunjie_222@qq.com" target="_blank" rel="noopener noreferrer nofollow">
+          <EnvelopeSimpleOpen size={14} weight="bold" className="mr-2" />
+          {t`Send me a message`}
         </a>
       </Button>
     </>

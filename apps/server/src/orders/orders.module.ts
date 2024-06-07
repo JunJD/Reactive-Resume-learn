@@ -10,7 +10,7 @@ const alipayOptions = {
   alipayPublicKey: process.env.ALIPAY_PUBLIC_KEY,
   gateway: process.env.GATEWAY,
 } as AlipayOptions;
-console.log(alipayOptions, "alipayOptions");
+
 @Module({
   imports: [AlipayModule.forRoot(alipayOptions)],
   controllers: [OrdersController],

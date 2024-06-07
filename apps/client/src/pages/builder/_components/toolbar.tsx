@@ -11,12 +11,14 @@ import {
   LinkSimple,
   MagnifyingGlassMinus,
   MagnifyingGlassPlus,
+  Translate,
 } from "@phosphor-icons/react";
 import { Button, Separator, Toggle, Tooltip } from "@reactive-resume/ui";
 import { motion } from "framer-motion";
 
 import { useToast } from "@/client/hooks/use-toast";
 import { usePrintResume } from "@/client/services/resume";
+import { useAiTranslate } from "@/client/services/resume/openai";
 import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore, useTemporalResumeStore } from "@/client/stores/resume";
 
@@ -32,16 +34,24 @@ export const BuilderToolbar = () => {
   const redo = useTemporalResumeStore((state) => state.redo);
   const frameRef = useBuilderStore((state) => state.frame.ref);
 
+  const { resume } = useResumeStore.getState();
   const id = useResumeStore((state) => state.resume.id);
   const isPublic = useResumeStore((state) => state.resume.visibility === "public");
   const pageOptions = useResumeStore((state) => state.resume.data.metadata.page.options);
 
-  const { printResume, loading } = usePrintResume();
+  const { printResume, loading: isPrinting } = usePrintResume();
+  const { translateResume, loading: isTranslating } = useAiTranslate();
 
   const onPrint = async () => {
     const { url } = await printResume({ id });
 
     openInNewTab(url);
+  };
+
+  const onTranslate = async () => {
+    const resumeJSON = resume.data;
+    const newResumeJSON = await translateResume(resumeJSON);
+    console.log(newResumeJSON, "newResumeJSON");
   };
 
   const onCopy = async () => {
@@ -143,7 +153,7 @@ export const BuilderToolbar = () => {
 
         <Separator orientation="vertical" className="h-9" />
 
-        <Tooltip content={t`Copy Link to Resume`}>
+        <Tooltip content={t`Copy online resume links`}>
           <Button
             size="icon"
             variant="ghost"
@@ -159,11 +169,25 @@ export const BuilderToolbar = () => {
           <Button
             size="icon"
             variant="ghost"
-            disabled={loading}
+            disabled={isPrinting}
             className="rounded-none"
             onClick={onPrint}
           >
-            {loading ? <CircleNotch className="animate-spin" /> : <FilePdf />}
+            {isPrinting ? <CircleNotch className="animate-spin" /> : <FilePdf />}
+          </Button>
+        </Tooltip>
+
+        <Separator orientation="vertical" className="h-9" />
+
+        <Tooltip content={t`Translate Resume`}>
+          <Button
+            size="icon"
+            variant="ghost"
+            disabled={isTranslating}
+            className="rounded-none"
+            onClick={onTranslate}
+          >
+            {isTranslating ? <CircleNotch className="animate-spin" /> : <Translate />}
           </Button>
         </Tooltip>
       </div>

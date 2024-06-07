@@ -48,7 +48,7 @@ enum ImportType {
   "reactive-resume-json" = "reactive-resume-json",
   "reactive-resume-v3-json" = "reactive-resume-v3-json",
   "json-resume-json" = "json-resume-json",
-  "linkedin-data-export-zip" = "linkedin-data-export-zip",
+  "pdf-parser" = "pdf-parser",
 }
 
 const formSchema = z.object({
@@ -127,7 +127,7 @@ export const ImportDialog = () => {
         setValidationResult({ isValid: true, type, result });
       }
 
-      if (type === ImportType["linkedin-data-export-zip"]) {
+      if (type === ImportType["pdf-parser"]) {
         const parser = new LinkedInParser();
         const data = await parser.readFile(file);
         const result = await parser.validate(data);
@@ -176,7 +176,7 @@ export const ImportDialog = () => {
         await importResume({ data });
       }
 
-      if (type === ImportType["linkedin-data-export-zip"]) {
+      if (type === ImportType["pdf-parser"]) {
         const parser = new LinkedInParser();
         const data = parser.convert(validationResult.result as LinkedIn);
 
@@ -238,9 +238,7 @@ export const ImportDialog = () => {
                         {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
                         <SelectItem value="json-resume-json">JSON Resume (.json)</SelectItem>
                         {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-                        <SelectItem value="linkedin-data-export-zip">
-                          LinkedIn Data Export (.zip)
-                        </SelectItem>
+                        <SelectItem value="pdf-parser">PDF Resume parser (.pdf)</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
