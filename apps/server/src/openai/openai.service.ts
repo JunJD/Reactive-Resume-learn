@@ -1,12 +1,12 @@
 import { Document } from "@langchain/core/documents";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatOpenAI } from "@langchain/openai";
+import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { loadSummarizationChain } from "langchain/chains";
 
 import { GENERATIVE_AI_MODULE_OPTIONS } from "./constants";
 import { OpenaiModuleOptions } from "./interfaces";
-
 @Injectable()
 export default class OpenaiService {
   private chatModel!: ChatOpenAI;
@@ -15,6 +15,7 @@ export default class OpenaiService {
   constructor(
     @Inject(GENERATIVE_AI_MODULE_OPTIONS)
     protected readonly options: OpenaiModuleOptions,
+    private readonly httpService: HttpService,
   ) {
     this.chatModel = new ChatOpenAI({
       openAIApiKey: this.options.modelApiKey,
@@ -32,13 +33,25 @@ export default class OpenaiService {
   }
 
   async chatWithGpt(prompt: string): Promise<string> {
-    const outputParser = new StringOutputParser();
-
-    const chain = this.chatModel.pipe(outputParser);
-
-    const result = await chain.invoke(prompt);
-
-    return result;
+    console.log("chatWithGpt start");
+    try {
+      const res = await fetch(this.options.modelApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.options.modelApiKey}`,
+        },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: prompt }],
+          model: "gpt-3.5-turbo",
+          stream: true,
+        }),
+      });
+      return await res.json();
+    } catch (error) {
+      console.trace(error);
+      return error;
+    }
   }
 
   async generateFeedbackOnInputWithGuidelines(

@@ -19,6 +19,7 @@
     "datasource",
     "fontkit",
     "hookform",
+    "immer",
     "langchain",
     "lingui",
     "Mustermann",

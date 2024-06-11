@@ -31,7 +31,10 @@ export const PayPage = () => {
 
   useEffect(() => {
     if (!unpaidOrder) {
-      toast("支付成功，支付完成");
+      toast({
+        variant: "error",
+        title: "支付成功，支付完成",
+      });
       navigate(redirect);
     }
   }, [unpaidOrder]);

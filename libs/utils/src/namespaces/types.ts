@@ -1,4 +1,4 @@
-export type Json = Record<string, unknown>;
+export type Json<T = unknown> = Record<string, T>;
 
 export type LayoutLocator = { page: number; column: number; section: number };
 

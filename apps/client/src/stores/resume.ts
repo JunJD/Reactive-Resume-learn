@@ -17,6 +17,7 @@ type ResumeStore = {
 
   // Actions
   setValue: (path: string, value: unknown) => void;
+  updateResumeData: (resumeData: ResumeDto["data"]) => void;
 
   // Custom Section Actions
   addSection: () => void;
@@ -35,6 +36,12 @@ export const useResumeStore = create<ResumeStore>()(
             state.resume.data = _set(state.resume.data, path, value);
           }
 
+          void debouncedUpdateResume(JSON.parse(JSON.stringify(state.resume)));
+        });
+      },
+      updateResumeData: (resumeData: ResumeDto["data"]) => {
+        set((state) => {
+          state.resume.data = resumeData;
           void debouncedUpdateResume(JSON.parse(JSON.stringify(state.resume)));
         });
       },

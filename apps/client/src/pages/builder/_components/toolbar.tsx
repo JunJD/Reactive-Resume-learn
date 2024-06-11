@@ -30,6 +30,7 @@ const openInNewTab = (url: string) => {
 export const BuilderToolbar = () => {
   const { toast } = useToast();
   const setValue = useResumeStore((state) => state.setValue);
+  const updateResumeData = useResumeStore((state) => state.updateResumeData);
   const undo = useTemporalResumeStore((state) => state.undo);
   const redo = useTemporalResumeStore((state) => state.redo);
   const frameRef = useBuilderStore((state) => state.frame.ref);
@@ -51,6 +52,7 @@ export const BuilderToolbar = () => {
   const onTranslate = async () => {
     const resumeJSON = resume.data;
     const newResumeJSON = await translateResume(resumeJSON);
+    updateResumeData(newResumeJSON);
     console.log(newResumeJSON, "newResumeJSON");
   };
 
