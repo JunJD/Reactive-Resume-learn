@@ -193,6 +193,12 @@ export const LeftSidebar = () => {
             }}
           />
           <Separator />
+          <SectionBase<Certification>
+            id="certifications"
+            title={(item) => item.name}
+            description={(item) => item.issuer}
+          />
+          <Separator />
           <SectionBase<Language>
             id="languages"
             title={(item) => item.name}
@@ -203,12 +209,6 @@ export const LeftSidebar = () => {
             id="awards"
             title={(item) => item.title}
             description={(item) => item.awarder}
-          />
-          <Separator />
-          <SectionBase<Certification>
-            id="certifications"
-            title={(item) => item.name}
-            description={(item) => item.issuer}
           />
           <Separator />
           <SectionBase<Interest>
