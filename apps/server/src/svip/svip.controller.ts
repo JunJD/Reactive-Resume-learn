@@ -13,8 +13,14 @@ export class SvipController {
   @Post("translateResume")
   @UseGuards(TwoFactorGuard)
   async translateResume(@Body() resumeData: ResumeData) {
-    console.log("resumeData", "====");
     const result = await this.svipService.translateResume(resumeData);
+    return result;
+  }
+
+  @Post("optimizeResume")
+  @UseGuards(TwoFactorGuard)
+  async optimizeResume(@Body() resumeData: ResumeData) {
+    const result = await this.svipService.optimizeResume(resumeData);
     return result;
   }
 }

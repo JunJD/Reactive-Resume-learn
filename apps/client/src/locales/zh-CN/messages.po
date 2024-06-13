@@ -470,6 +470,11 @@ msgstr "下载 PDF"
 
 #: apps/client/src/pages/builder/_components/toolbar.tsx:158
 #: apps/client/src/pages/public/page.tsx:104
+msgid "AI to modify Resume"
+msgstr "AI 优化简历"
+
+#: apps/client/src/pages/builder/_components/toolbar.tsx:158
+#: apps/client/src/pages/public/page.tsx:104
 msgid "Translate Resume"
 msgstr "翻译简历"
 

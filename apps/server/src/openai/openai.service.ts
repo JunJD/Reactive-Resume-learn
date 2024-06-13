@@ -32,26 +32,31 @@ export default class OpenaiService {
     return OpenaiService.instance;
   }
 
-  async chatWithGpt(prompt: string): Promise<string> {
-    console.log("chatWithGpt start");
-    try {
-      const res = await fetch(this.options.modelApiUrl, {
-        method: "POST",
+  async chatWithGpt2(prompt: string) {
+    const response = await this.httpService.axiosRef.post(
+      this.options.modelApiUrl + "/chat/completions",
+      {
+        messages: [
+          {
+            role: "system",
+            content: "You are a industry experts and resume assistant.",
+          },
+          { role: "user", content: prompt },
+        ],
+        model: "gpt-4",
+      },
+      {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.options.modelApiKey}`,
         },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: prompt }],
-          model: "gpt-3.5-turbo",
-          stream: true,
-        }),
-      });
-      return await res.json();
-    } catch (error) {
-      console.trace(error);
-      return error;
-    }
+      },
+    );
+    console.log("当前消耗token：", response.data.usage.total_tokens);
+    return {
+      content: response.data.choices[0].message.content,
+      usage: response.data.usage.total_tokens,
+    };
   }
 
   async generateFeedbackOnInputWithGuidelines(

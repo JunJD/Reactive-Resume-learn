@@ -11,6 +11,7 @@ import {
   LinkSimple,
   MagnifyingGlassMinus,
   MagnifyingGlassPlus,
+  StarHalf,
   Translate,
 } from "@phosphor-icons/react";
 import { Button, Separator, Toggle, Tooltip } from "@reactive-resume/ui";
@@ -18,7 +19,7 @@ import { motion } from "framer-motion";
 
 import { useToast } from "@/client/hooks/use-toast";
 import { usePrintResume } from "@/client/services/resume";
-import { useAiTranslate } from "@/client/services/resume/openai";
+import { useAiOptimizeResume, useAiTranslate } from "@/client/services/resume/openai";
 import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore, useTemporalResumeStore } from "@/client/stores/resume";
 
@@ -42,6 +43,7 @@ export const BuilderToolbar = () => {
 
   const { printResume, loading: isPrinting } = usePrintResume();
   const { translateResume, loading: isTranslating } = useAiTranslate();
+  const { optimizeResume, loading: isOptimizing } = useAiOptimizeResume();
 
   const onPrint = async () => {
     const { url } = await printResume({ id });
@@ -52,6 +54,14 @@ export const BuilderToolbar = () => {
   const onTranslate = async () => {
     const resumeJSON = resume.data;
     const newResumeJSON = await translateResume(resumeJSON);
+    updateResumeData(newResumeJSON);
+    console.log(newResumeJSON, "newResumeJSON");
+  };
+
+  const onOptimizeResume = async () => {
+    const resumeJSON = resume.data;
+    console.log(resumeJSON);
+    const newResumeJSON = await optimizeResume(resumeJSON);
     updateResumeData(newResumeJSON);
     console.log(newResumeJSON, "newResumeJSON");
   };
@@ -190,6 +200,18 @@ export const BuilderToolbar = () => {
             onClick={onTranslate}
           >
             {isTranslating ? <CircleNotch className="animate-spin" /> : <Translate />}
+          </Button>
+        </Tooltip>
+
+        <Tooltip content={t`AI to modify Resume`}>
+          <Button
+            size="icon"
+            variant="ghost"
+            disabled={isOptimizing}
+            className="rounded-none"
+            onClick={onOptimizeResume}
+          >
+            {isOptimizing ? <StarHalf className="animate-spin" /> : <StarHalf />}
           </Button>
         </Tooltip>
       </div>

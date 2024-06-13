@@ -10,7 +10,7 @@ import OpenaiService from "./openai.service";
 @Module({
   imports: [
     HttpModule.register({
-      timeout: 20_000,
+      timeout: 100_000,
       validateStatus: () => true,
       httpsAgent: new Agent({
         keepAlive: false,
