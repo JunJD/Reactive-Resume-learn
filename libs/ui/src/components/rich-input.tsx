@@ -47,8 +47,10 @@ import { Paragraph } from "@tiptap/extension-paragraph";
 import { Strike } from "@tiptap/extension-strike";
 import { Text } from "@tiptap/extension-text";
 import { TextAlign } from "@tiptap/extension-text-align";
+import Typography from "@tiptap/extension-typography";
 import { Underline } from "@tiptap/extension-underline";
 import { Editor, EditorContent, EditorContentProps, useEditor } from "@tiptap/react";
+import MarkdownIt from "markdown-it";
 import { forwardRef, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -60,6 +62,14 @@ import { Popover, PopoverContent } from "./popover";
 import { Skeleton } from "./skeleton";
 import { Toggle } from "./toggle";
 import { Tooltip } from "./tooltip";
+const md = new MarkdownIt();
+const convertContent = (content?: string) => {
+  if (!content) return "";
+  const newContent = md.render(content);
+  console.log(content, newContent, "newContent");
+  // Check if content is HTML or Markdown
+  return content.trim().startsWith("<") ? content : newContent;
+};
 
 const InsertImageFormSchema = z.object({
   src: z.string(),
@@ -463,6 +473,7 @@ export const RichInput = forwardRef<Editor, RichInputProps>(
         HorizontalRule,
         Image,
         Underline,
+        Typography,
         Highlight,
         Link.extend({
           inclusive: false,
@@ -480,7 +491,7 @@ export const RichInput = forwardRef<Editor, RichInputProps>(
           ),
         },
       },
-      content,
+      content: convertContent(content),
       parseOptions: { preserveWhitespace: "full" },
       onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
     });

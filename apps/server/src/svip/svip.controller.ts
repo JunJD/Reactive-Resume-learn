@@ -20,7 +20,8 @@ export class SvipController {
   @Post("optimizeResume")
   @UseGuards(TwoFactorGuard)
   async optimizeResume(@Body() resumeData: ResumeData) {
-    const result = await this.svipService.optimizeResume(resumeData);
+    const result = await this.svipService.optimizeResume2(resumeData);
+
     return result;
   }
 }
