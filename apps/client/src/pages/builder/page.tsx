@@ -24,7 +24,7 @@ export const BuilderPage = () => {
     })();
   }, [frameRef, resume.data]);
 
-  // Send resume data to iframe on initial load
+  // 在初始加载时向iframe发送恢复数据
   useEffect(() => {
     if (!frameRef) return;
     frameRef.addEventListener("load", updateResumeInFrame);

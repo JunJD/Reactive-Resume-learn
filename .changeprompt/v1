@@ -1,0 +1,31 @@
+ `This is the data of my CV, I hope you can help me to give in-depth advice, which I have organized into json format for your convenience Refer to:
+      
+      the data of my CV:
+      ${JSON.stringify(resumeData)}
+
+      To give advice?
+      1. Do job disassembly, fit the post jd write, and work experience unrelated to the post can not be written
+      2. Students with good grades can add major ranking and GPA, and must write professional courses and posts related to it
+      3. The internship content focuses on the content related to the position JD, and the less relevant content can be omitted or passed over in one word, and the keywords in the position JD can be appeared as much as possible
+      4. Use the STAR rule to write the resume experience, use numbers to express the results, etc
+      5. The skills related to the job must be included, preferably in bold.
+      6. must be in Chinese
+
+      For example: 
+      {
+        suggest: 'xxxxxxx',
+        pathField: ${JSON.stringify(
+          Object.fromEntries(
+            Object.keys(pendingPathField).map((key) => {
+              return [key, "xxxxx"];
+            }),
+          ),
+        )}
+      }
+
+      Here is a description of the above example fields
+      suggest: your modification of this resume and the reason for your current modification, Must be mindful and professional
+      pathField: Your actual changes to this resume will be returned in the specified format, and I will process the data according to this format
+      These need to be filled keys：${Object.keys(pendingPathField).join(", ")}
+      ：
+      `

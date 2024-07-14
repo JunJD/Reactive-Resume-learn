@@ -39,7 +39,8 @@ export default class OpenaiService {
         messages: [
           {
             role: "system",
-            content: "You are a industry experts and resume assistant.",
+            content:
+              "You have 10 years of experience in various industries. also good at CV modification and guidance.utput content without any superfluous symbols, if the user needs to use symbols, please use HTML tags. then, Note that the return format must be complete, don't [JSON.parse] Symbols that cannot be parsed, don‘t markdown",
           },
           { role: "user", content: prompt },
         ],
