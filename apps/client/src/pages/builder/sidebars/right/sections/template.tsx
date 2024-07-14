@@ -35,7 +35,7 @@ export const TemplateSection = () => {
                 setValue("metadata.template", template);
               }}
             >
-              <img src={`/templates/jpg/${template}.jpg`} alt={template} className="rounded-sm" />
+              <img src={template!=='design'?`/templates/jpg/${template}.jpg`: '/templates/jpg/azurill.jpg'} alt={template} className="rounded-sm" />
 
               <div className="absolute inset-x-0 bottom-0 h-32 w-full bg-gradient-to-b from-transparent to-background/80">
                 <p className="absolute inset-x-0 bottom-2 text-center font-bold capitalize text-primary">
