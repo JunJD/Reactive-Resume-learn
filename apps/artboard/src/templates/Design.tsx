@@ -17,6 +17,9 @@ import {
   URL,
   Volunteer,
 } from "@reactive-resume/schema";
+import {
+  MapPin
+} from "@phosphor-icons/react";
 import { cn, hexToRgb, isEmptyString, isUrl, linearTransform } from "@reactive-resume/utils";
 import get from "lodash.get";
 import { Fragment } from "react";
@@ -283,7 +286,7 @@ const Section = <T,>({
   const primaryColor = useArtboardStore((state) => state.resume.metadata.theme.primary);
   return (
     <section id={section.id} className="grid relative border-[#EEF1F6] group-[.main]:border-l group-[.main]:pl-8 group-[.main]:pb-4">
-      <h4 className="mb-2 pb-0.5 text-base font-bold group-[.sidebar]:text-primary">
+      <h4 className="pb-0.5 text-base font-bold group-[.sidebar]:text-primary mb-5">
         {section.name}
       </h4>
 
@@ -310,7 +313,7 @@ const Section = <T,>({
 
                     {summary !== undefined && !isEmptyString(summary) && (
                       <div dangerouslySetInnerHTML={{ __html: summary }} className={cn('wysiwyg')} style={{
-                        fontSize: isHorizontal ? '10px': 'inherit',
+                        fontSize: isHorizontal ? '10px' : 'inherit',
                       }} />
                     )}
 
@@ -334,10 +337,7 @@ const Section = <T,>({
           offset='3px 2px'
           renderText={() => {
             return (
-              <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="5.8299560546875" height="4.58001708984375" viewBox="0 0 5.8299560546875 4.58001708984375" fill="none">
-                <path d="M1.30644 4.58C1.99234 4.58 2.49856 4.07487 2.49856 3.46866C2.49856 2.79513 2.05764 2.34052 1.40445 2.34052C1.24115 2.34052 1.1105 2.40789 1.07779 2.4247C1.1105 1.70065 1.84537 1.04397 2.49856 0.926122L2.49856 0C1.5351 0.101035 0 0.94293 0 3.04772C0 3.97384 0.555249 4.58 1.30644 4.58ZM5.83 0C4.86648 0.101035 3.33144 0.94293 3.33144 3.04772C3.33144 3.97384 3.88669 4.58 4.63788 4.58C5.32378 4.58 5.83 4.07487 5.83 3.46866C5.83 2.79513 5.38908 2.34052 4.73583 2.34052C4.57253 2.34052 4.44188 2.40789 4.40923 2.4247C4.44188 1.70065 5.17681 1.04397 5.83 0.926122L5.83 0Z" fill-rule="evenodd" fill="#79819A" >
-                </path>
-              </svg>
+              <div className="rounded-full bg-[#333] w-2 h-2" />
             )
           }}
         />
@@ -352,30 +352,33 @@ const Experience = () => {
   return (
     <Section<Experience> section={section} urlKey="url" summaryKey="summary" isHorizontal>
       {(item) => (
-        <div className="relative left-0 top-0 flex flex-row items-center group-[.sidebar]:flex-col group-[.sidebar]:items-start" style={{
+        <div className="w-[220px] relative left-0 top-0 flex flex-row items-center group-[.sidebar]:flex-col group-[.sidebar]:items-start" style={{
           fontSize: '10px'
         }}>
-          {/* <MattsIcon
-            color={primaryColor}
-            colNum={4}
-            rowNum={4}
-            offset='2px 2px'
-            renderText={() => {
-              return (
-                <div className="size-[4px] rounded-full bg-primary group-[.main]:block" />
-              )
-            }}
-          /> */}
           <div className="shrink-0 text-right">
-            <div className="flex flex-row">
-              <div className="font-bold">{item.date}</div>
-              <div>{item.location}</div>
+            <div className="flex flex-row pl-4">
+              <div className="font-bold mr-2">{item.date}</div>
+              {item.location && <div className="flex flex-row">
+                <MattsIcon
+                  color={primaryColor}
+                  colNum={3}
+                  rowNum={3}
+                  className="m-auto"
+                  offset='0.5px 0.5px'
+                  renderText={() => {
+                    return (
+                      <MapPin className="w-1.5 h-1.5" color="#79819A" weight="fill" />
+                    )
+                  }}
+                />
+                <span className="text-[#79819A]">{item.location}</span>
+              </div>}
             </div>
-            <div className="flex flex-row">
-              <div className="border rounded border-primary p-1 w-12 h-12 flex items-center justify-center bg-primary"></div>
-              <div>
-                <div>{item.position}</div>
-                <div>{item.company}</div>
+            <div className="flex flex-row my-2 group-[.main]:border-l group-[.main]:pl-4 border-[#EEF1F6]">
+              <img src="/assets/icon/apple.svg" alt="apple" className="w-10 h-10 mr-2 ml-0 flex items-center justify-center"/>
+              <div className="flex flex-col align-left justify-start">
+                <div className="align-left">{item.position}</div>
+                <div className="align-left">{item.company}</div>
               </div>
               {/* <LinkedEntity
                 name={item.company}
@@ -386,14 +389,21 @@ const Experience = () => {
             </div>
           </div>
 
+          <div className="z-10 absolute left-0 top-0 -translate-x-1/2 translate-y-[2px] shadow-md w-4 h-4 rounded-full bg-[#fff] flex items-center justify-between" >
+            <MattsIcon
+              color={primaryColor}
+              colNum={4}
+              rowNum={4}
+              className="m-auto"
+              offset='2px 2px'
+              renderText={() => {
+                return (
+                  <div className="rounded-full bg-[#333] w-1 h-1" />
+                )
+              }}
+            />
+          </div>
         </div>
-        // <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
-        //   <div className="text-left">
-
-        //     <div>{item.position}</div>
-        //   </div>
-
-        // </div>
       )}
     </Section>
   );
@@ -602,7 +612,7 @@ const Projects = () => {
   const section = useArtboardStore((state) => state.resume.sections.projects);
 
   return (
-    <Section<Project> section={section} urlKey="url" summaryKey="summary" keywordsKey="keywords">
+    <Section<Project> section={section} urlKey="url" summaryKey="summary" keywordsKey="keywords" className="bg-[#F8F9FC] py-2 pr-4 rounded-lg">
       {(item) => (
         <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
@@ -734,7 +744,7 @@ export const Design = ({ columns, isFirstPage = false }: TemplateProps) => {
     <div className="grid min-h-[inherit] grid-cols-4">
       <div
         className="sidebar p-custom group space-y-4"
-        style={{ backgroundColor: '#fff' }}
+        style={{ backgroundColor: '#FFFFFF' }}
       >
         {isFirstPage && <Header />}
 
